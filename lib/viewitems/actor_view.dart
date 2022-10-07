@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:movie_app/data/vos/base_actor_vo.dart';
 import 'package:movie_app/resources/colors.dart';
 
+import '../data/vos/actor_vo.dart';
+import '../network/api_constant.dart';
 import '../resources/dimens.dart';
 
 class ActorView extends StatelessWidget {
+
+  BaseActorVo? mActorVo;
+  ActorView({required this.mActorVo});
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -14,7 +20,9 @@ class ActorView extends StatelessWidget {
         child: Stack(
           children: [
             Positioned.fill(
-                child: ActorImageView()
+                child: ActorImageView(
+                  mImageUrl: mActorVo?.profilePath,
+                )
             ),
             Padding(
               padding: const EdgeInsets.all(MARGIN_MEDIUM),
@@ -25,7 +33,7 @@ class ActorView extends StatelessWidget {
             ),
             Align(
               alignment: Alignment.bottomCenter,
-              child: ActorNameAndLikeView(),
+              child: ActorNameAndLikeView(actorName: mActorVo?.name,),
 
             )
           ],
@@ -37,10 +45,15 @@ class ActorView extends StatelessWidget {
 }
 
 class ActorImageView extends StatelessWidget {
+  String? mImageUrl;
 
+  ActorImageView({this.mImageUrl});
   @override
   Widget build(BuildContext context) {
-    return Image.network("https://static.wikia.nocookie.net/gameofthrones/images/d/d3/Aislng_Franciosi.jpg/revision/latest?cb=20190513215356",
+    return Image.network(
+      // "https://static.wikia.nocookie.net/gameofthrones/images/d/d3/Aislng_Franciosi.jpg/revision/latest?cb=20190513215356",
+
+      "$IMAGE_BASE_URL$mImageUrl",
       fit: BoxFit.cover,
     );
   }
@@ -61,9 +74,8 @@ class FavouriteButtonView extends StatelessWidget {
 }
 
 class ActorNameAndLikeView extends StatelessWidget {
-  const ActorNameAndLikeView({
-    Key? key,
-  }) : super(key: key);
+  String? actorName;
+  ActorNameAndLikeView({this.actorName});
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +86,7 @@ class ActorNameAndLikeView extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-              "Aisling Franciosi",
+              actorName?? "",
             style: TextStyle(
               color: Colors.white,
               fontSize: TEXT_REGULAR,

@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:movie_app/resources/dimens.dart';
 import 'package:movie_app/widgets/play_button_view.dart';
 
+import '../data/vos/movie_vo.dart';
+import '../network/api_constant.dart';
 import '../widgets/title_text.dart';
 
 class ShowCaseView extends StatelessWidget {
-  const ShowCaseView({Key? key}) : super(key: key);
+
+  MovieVO? mMovieVo;
+  ShowCaseView({this.mMovieVo});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +19,9 @@ class ShowCaseView extends StatelessWidget {
       child: Stack(
         children: [
           Positioned.fill(
-              child: Image.network("https://cinemaaustralia.files.wordpress.com/2019/08/the-nightingale-cinema-australia-featured-1.jpg",
+              child: Image.network(
+                // "https://cinemaaustralia.files.wordpress.com/2019/08/the-nightingale-cinema-australia-featured-1.jpg",
+                "$IMAGE_BASE_URL${mMovieVo!.posterPath!}",
                 fit: BoxFit.cover,
               )
           ),
@@ -33,7 +39,7 @@ class ShowCaseView extends StatelessWidget {
                 children: [
 
                   Text(
-                    "The NightIngale",
+                    mMovieVo!.title!,
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: TEXT_REGULAR_3X,

@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:movie_app/network/api_constant.dart';
 import 'package:movie_app/resources/colors.dart';
 import 'package:movie_app/resources/dimens.dart';
-
+import '../data/vos/movie_vo.dart';
 import '../widgets/gradient_view.dart';
 import '../widgets/play_button_view.dart';
 
 class BannerView extends StatelessWidget {
-  const BannerView({Key? key}) : super(key: key);
+
+  MovieVO? mMovieVo;
+  BannerView({this.mMovieVo});
 
   @override
   Widget build(BuildContext context) {
@@ -14,42 +17,49 @@ class BannerView extends StatelessWidget {
       children: [
         Positioned.fill(
             child:
-            BannerImageView(),
+            BannerImageView(
+              mImageUrl: mMovieVo?.posterPath,
+            ),
         ),
         Positioned.fill(
             child: GradientView()
         ),
         Align(
           alignment: Alignment.bottomLeft,
-          child: BannerTitleView(),
+          child: BannerTitleView(
+            bannerTitle: mMovieVo?.title,
+          ),
         ),
         Align(
           alignment: Alignment.center,
           child: PlayButtonView()
         )
       ],
+
     );
   }
 }
 
 class BannerImageView extends StatelessWidget {
-  const BannerImageView({
-    Key? key,
-  }) : super(key: key);
+  String? mImageUrl;
+
+  BannerImageView({this.mImageUrl});
 
   @override
   Widget build(BuildContext context) {
     return Image.network(
-        "https://imusic.b-cdn.net/images/item/original/892/5060192819892.jpg?movie-2020-the-nightingale-dvd&class=scaled",
+        // "https://imusic.b-cdn.net/images/item/original/892/5060192819892.jpg?movie-2020-the-nightingale-dvd&class=scaled",
+
+        "$IMAGE_BASE_URL$mImageUrl",
         fit:BoxFit.cover
     );
   }
 }
 
 class BannerTitleView extends StatelessWidget {
-  const BannerTitleView({
-    Key? key,
-  }) : super(key: key);
+
+  String? bannerTitle;
+  BannerTitleView({this.bannerTitle});
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +69,8 @@ class BannerTitleView extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("THE NIGHTINGALE",
+          Text(
+            bannerTitle!,
             style: TextStyle(
               color: Colors.white,
               fontSize: TEXT_HEADING_1x,
@@ -72,7 +83,6 @@ class BannerTitleView extends StatelessWidget {
                 fontSize: TEXT_HEADING_1x,
                 fontWeight: FontWeight.w500
             ),
-
           ),
         ],
       ),

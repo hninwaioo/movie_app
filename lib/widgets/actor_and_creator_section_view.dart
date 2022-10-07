@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:movie_app/data/vos/base_actor_vo.dart';
 import 'package:movie_app/widgets/title_text_with_see_more_view.dart';
+import '../data/vos/actor_vo.dart';
 import '../resources/colors.dart';
 import '../resources/dimens.dart';
 import '../viewitems/actor_view.dart';
@@ -9,10 +11,18 @@ class ActorAndCreatorSectionView extends StatelessWidget {
   final String titleText;
   final String seeMoreText;
   final bool seeMoreButtonVisibility;
-  ActorAndCreatorSectionView(this.titleText,this.seeMoreText,{this.seeMoreButtonVisibility = true});
+  final List<BaseActorVo> mActorList;
+
+  ActorAndCreatorSectionView(
+      this.titleText,
+      this.seeMoreText,
+      {this.seeMoreButtonVisibility = true,required this.mActorList});
+
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return (mActorList != null)
+      ?
+      Container(
       color: PRIMARY_COLOR,
       padding: EdgeInsets.only(
           top: MARGIN_MEDIUM_2,
@@ -34,15 +44,21 @@ class ActorAndCreatorSectionView extends StatelessWidget {
             child: ListView(
               scrollDirection: Axis.horizontal,
               padding: EdgeInsets.only(left: MARGIN_MEDIUM_2),
-              children: [
-                ActorView(),
-                ActorView(),
-                ActorView()
-              ],
+              children: mActorList
+                .map((actor) => ActorView(
+                  mActorVo: actor
+              )).toList()
+                // ActorView(),
+                // ActorView(),
+                // ActorView()
+
             ),
           ),
         ],
       ),
-    );
+    ):
+        Center(
+          child: CircularProgressIndicator(),
+        );
   }
 }
